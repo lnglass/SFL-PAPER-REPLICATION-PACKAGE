@@ -1,7 +1,7 @@
 # SFL-PAPER-REPLICATION-PACKAGE
 R and stata code for SFL working paper by Glassow & Kirsten (working paper version).
 
-This repository contains several .R AND stata do files that provide the code for the paper: Does in-service training in special education increase the effectiveness of general classroom teachers? Evidence from the large-scale “Special Education Pedagogy for Learning” program in Sweden by Leah Glassow and Nils Kirsten, which is currently a working paper. 
+This repository contains several .R and .do files that provide the code for the paper: Does in-service training in special education increase the effectiveness of general classroom teachers? Evidence from the large-scale “Special Education Pedagogy for Learning” program in Sweden by Leah Glassow and Nils Kirsten, which is currently a working paper. 
 
 Contents
 R files for data preparation and plots, stata do files for csdid analysis in stata, and the output from stata regarding the results. The micro-level data are not available publically as they are register data. You can apply for access to the data from Statistics Sweden. 
