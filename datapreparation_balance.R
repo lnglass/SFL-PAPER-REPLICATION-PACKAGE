@@ -350,6 +350,12 @@ bal2016<-bal2016e%>%
 pre2016<-bal2016 %>%
   left_join(ach_quartile, cert_quart, exp_quart, by=c("idschool1"))
 
+mergesfl<-pre2016 %>%
+  left_join(ach_quartile, cert_quart, exp_quart, by=c("idschool1"))
+
+
+
+
 
 ####merge data for analysis in stata 
 
