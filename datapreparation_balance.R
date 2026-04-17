@@ -136,11 +136,8 @@ ns<- ns%>%
   mutate(
     math6_z=scale(math6),
     swe6_z=scale(swe6),
-    sci6_z=scale(sci6),
     math9_z=scale(math9),
     swe9_z=scale(swe9),
-    sci9_z=scale(sci9),
-    ntswe3_z=scale(ntswe3),
     ntswe6_z=scale(ntswe6),
     ntswe9_z=scale(ntswe9),
     ntmath3_z=scale(ntmath3),
@@ -156,38 +153,13 @@ ns<-ns%>%
              schoolowner==2~0,
              schoolowner==1~0))
 
-ns<ns%>%
-  rowwise()%>%
-  mutate(mathgrade=case_when(
-    grade6 > 0 & grade9 > 0 ~ (math6_z*grade6+math9_z*grade9)/(grade6+grade9),
-    grade6 > 0 & (is.na(grade9)|grade9==0) ~ math6_z,
-    grade9 > 0 & (is.na(grade6)|grade6==0) ~ math9_z,
-    TRUE~NA_real_))%>%
-  mutate(swegrade=case_when(
-    grade6 > 0 & grade9 > 0 ~ (swe6_z*grade6+swe9_z*grade9)/(grade6+grade9),
-    grade6 > 0 & (is.na(grade9)|grade9==0) ~ swe6_z,
-    grade9 > 0 & (is.na(grade6)|grade6==0) ~ swe9_z,
-    TRUE~NA_real_))
-mutate(ntmath=case_when(
-  grade3 > 0 & grade6 > 0 & grade9 > 0 ~ (ntmath3_z*grade3+ntmath6_z*grade6+ntmath9_z*grade9)/(grade3+grade6+grade9),
-  grade3 > 0 & grade6 > 0 & (is.na(grade9)|grade9==0) ~ (ntmath3_z*grade3+grade6*ntmath6_z)/(grade3+grade6),
-  grade3 > 0 & grade9 > 0 & (is.na(grade6)|grade6==0) ~ (ntmath3_z*grade3+grade9*ntmath9_z)/(grade3+grade9),
-  grade6 > 0 & grade9 > 0 & (is.na(grade3)|grade3==0) ~ (ntmath6_z*grade6+ntmath9_z*grade9)/(grade6+grade9),
-  grade3 > 0 & (is.na(grade6)|grade6==0) & (is.na(grade9)|grade9==0) ~ ntmath3_z,
-  grade6 > 0 & (is.na(grade3)|grade3==0) & (is.na(grade9)|grade9==0) ~ ntmath6_z,
-  grade9 > 0 & (is.na(grade3)|grade3==0) & (is.na(grade6)|grade6==0) ~ ntmath9_z,
-  TRUE~NA_real_))%>%
-  mutate(ntswe=case_when(
-    grade3 > 0 & grade6 > 0 & grade9 > 0 ~ (ntswe3_z*grade3+ntswe6_z*grade6+ntswe9_z*grade9)/(grade3+grade6+grade9),
-    grade3 > 0 & grade6 > 0 & (is.na(grade9)|grade9==0) ~ (ntswe3_z*grade3+grade6*ntswe6_z)/(grade3+grade6),
-    grade3 > 0 & grade9 > 0 & (is.na(grade6)|grade6==0) ~ (ntswe3_z*grade3+grade9*ntswe9_z)/(grade3+grade9),
-    grade6 > 0 & grade9 > 0 & (is.na(grade3)|grade3==0) ~ (ntswe6_z*grade6+ntswe9_z*grade9)/(grade6+grade9),
-    grade3 > 0 & (is.na(grade6)|grade6==0) & (is.na(grade9)|grade9==0) ~ ntswe3_z,
-    grade6 > 0 & (is.na(grade3)|grade3==0) & (is.na(grade9)|grade9==0) ~ ntswe6_z,
-    grade9 > 0 & (is.na(grade3)|grade3==0) & (is.na(grade6)|grade6==0) ~ ntswe9_z,
-    TRUE~NA_real_))%>%
-  ungroup()
-
+ns <- ns %>%
+  mutate(
+    zmathgrade = if_else(grade %in% c(6, 9), coalesce(math6, math9), NA_real_),
+    zswegrade  = if_else(grade %in% c(6, 9), coalesce(swe6, swe9), NA_real_),
+    zntmath    = if_else(grade %in% c(6, 9), coalesce(ntmath6, ntmath9), NA_real_),
+    zntswe     = if_else(grade %in% c(6, 9), coalesce(ntswe6, ntswe9), NA_real_)
+  )
 
 write_sav(ns, "data.sav")
 
