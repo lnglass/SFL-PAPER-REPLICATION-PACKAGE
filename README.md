@@ -21,8 +21,3 @@ foreign
 Stata
 csdid 
 
-Load Packages: Loads necessary R packages.
-Load and Clean Data: R
-Run analysis: Stata 
-Plot effect sizes: R
-
